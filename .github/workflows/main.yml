@@ -32,7 +32,7 @@ jobs:
         run: ./gradlew bootJar
           
       - name: Copy Jar file
-        run: mv build/libs/$(ls build/libs) app.jar
+        run: Move-Item -Path "build/libs/*.jar" -Destination "app.jar"
 
       - name: Upload Jar artifact
         uses: actions/upload-artifact@master
