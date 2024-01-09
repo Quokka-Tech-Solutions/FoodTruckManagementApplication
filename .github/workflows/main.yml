@@ -55,7 +55,8 @@ jobs:
           name: jar-file
           path: app.jar
 
-      - name: Set up QEMU
+      - name: Setup QEMU
+        if: runner.os == 'Linux'
         uses: docker/setup-qemu-action@v2
       
       - name: Set up Docker Buildx
