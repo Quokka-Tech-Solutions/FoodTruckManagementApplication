@@ -4,7 +4,7 @@ FROM openjdk:17
 
 WORKDIR /src/main/java
 
-# CMD ["./gradlew", "clean", "bootjar"]
+CMD ["./gradlew", "clean", "bootjar"]
 COPY /build/libs/*-SNAPSHOT.jar /app.jar
 EXPOSE 8080
 
