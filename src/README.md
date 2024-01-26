@@ -1,5 +1,6 @@
-Clean Architecture Folder structure
+# H1 Clean Architecture Folder structure
 
+```
 src
 	main
 		java
@@ -38,3 +39,4 @@ src
 					....
 				infrastructure
 					repositories
+```
