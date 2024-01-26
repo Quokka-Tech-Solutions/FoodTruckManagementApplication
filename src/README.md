@@ -1,4 +1,4 @@
-# H1 Clean Architecture Folder structure
+# Clean Architecture Folder structure
 
 ```
 src
