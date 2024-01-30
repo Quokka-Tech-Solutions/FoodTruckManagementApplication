@@ -1,7 +1,10 @@
 package com.quokkatechsolutions.foodTruckManagement.order.domain.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+//import javax.persistence.Entity;
+//import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.util.Objects;
 
 @Entity
