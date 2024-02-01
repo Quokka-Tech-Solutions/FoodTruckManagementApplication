@@ -2,10 +2,11 @@
 FROM ubuntu:latest
 FROM openjdk:17
 
-WORKDIR /src/main/java
+RUN mkdir /app
+COPY ./build/libs/order-0.0.1-SNAPSHOT.jar /app/order.jar
 
-CMD ["./gradlew", "clean", "bootjar"]
-COPY /build/libs/order-0.0.1-SNAPSHOT.jar /app.jar
+WORKDIR /app
+
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/app/order.jar"]
