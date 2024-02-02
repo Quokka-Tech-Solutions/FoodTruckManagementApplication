@@ -1,4 +1,4 @@
-package com.quokkatechsolutions.foodTruckManagement.order;
+package com.quokkatechsolutions.foodTruckManagement;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,6 +1,6 @@
-package com.quokkatechsolutions.foodTruckManagement.order.domain.repositories;
+package com.quokkatechsolutions.foodTruckManagement.domain.repositories;
 
-import com.quokkatechsolutions.foodTruckManagement.order.domain.entities.User;
+import com.quokkatechsolutions.foodTruckManagement.domain.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

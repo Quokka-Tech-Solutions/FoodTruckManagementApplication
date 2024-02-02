@@ -1,4 +1,4 @@
-package com.quokkatechsolutions.foodTruckManagement.order.domain.entities;
+package com.quokkatechsolutions.foodTruckManagement.domain.entities;
 
 //import javax.persistence.Entity;
 //import javax.persistence.Id;
