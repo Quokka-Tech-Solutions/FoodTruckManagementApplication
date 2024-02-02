@@ -1,7 +1,7 @@
-package com.quokkatechsolutions.foodTruckManagement.order.api.controllers;
+package com.quokkatechsolutions.foodTruckManagement.api.controllers;
 
-import com.quokkatechsolutions.foodTruckManagement.order.domain.entities.User;
-import com.quokkatechsolutions.foodTruckManagement.order.domain.services.UserService;
+import com.quokkatechsolutions.foodTruckManagement.domain.services.UserService;
+import com.quokkatechsolutions.foodTruckManagement.domain.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

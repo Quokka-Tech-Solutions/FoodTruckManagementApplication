@@ -3,7 +3,7 @@ name: Docker CI
 on:
   push:
     branches:
-      - "main"
+      - "refactor_package_name"
 
 jobs:
   build:
