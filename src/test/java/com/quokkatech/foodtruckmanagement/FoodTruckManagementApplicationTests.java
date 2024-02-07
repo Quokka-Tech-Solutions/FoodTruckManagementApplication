@@ -1,10 +1,10 @@
-package com.quokkatechsolutions.foodTruckManagement.order;
+package com.quokkatech.foodtruckmanagement;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OrderApplicationTests {
+class FoodTruckManagementApplicationTests {
 
 	@Test
 	void contextLoads() {

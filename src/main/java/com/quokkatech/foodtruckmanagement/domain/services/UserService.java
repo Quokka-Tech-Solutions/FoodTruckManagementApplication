@@ -1,7 +1,7 @@
-package com.quokkatechsolutions.foodTruckManagement.order.domain.services;
+package com.quokkatech.foodtruckmanagement.domain.services;
 
-import com.quokkatechsolutions.foodTruckManagement.order.domain.entities.User;
-import com.quokkatechsolutions.foodTruckManagement.order.domain.repositories.UserRepository;
+import com.quokkatech.foodtruckmanagement.domain.entities.User;
+import com.quokkatech.foodtruckmanagement.domain.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
