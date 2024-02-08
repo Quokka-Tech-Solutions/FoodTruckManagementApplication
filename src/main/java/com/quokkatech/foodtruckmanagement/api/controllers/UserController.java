@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -32,5 +33,12 @@ public class UserController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping()
+    public ResponseEntity<List<User>> getAllUsers(){
+        List<User> userList = userService.findAllUsers();
+        return ResponseEntity.ok(List.of(userList.toArray(new User[0])));
+    }
+
 
 }
