@@ -4,6 +4,7 @@ import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.domain.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,5 +18,9 @@ public class UserService {
 
     public Optional<User> findById(long id) {
         return userRepository.findById(id);
+    }
+
+    public List<User> findAllUsers(){
+        return userRepository.findAll();
     }
 }
