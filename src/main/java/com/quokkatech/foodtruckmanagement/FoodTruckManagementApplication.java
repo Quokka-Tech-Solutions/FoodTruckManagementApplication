@@ -1,13 +1,13 @@
-package com.quokkatechsolutions.foodTruckManagement;
+package com.quokkatech.foodtruckmanagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FoodTruckApplication {
+public class FoodTruckManagementApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FoodTruckApplication.class, args);
+		SpringApplication.run(FoodTruckManagementApplication.class, args);
 	}
 
 }

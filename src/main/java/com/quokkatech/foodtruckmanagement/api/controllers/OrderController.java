@@ -1,8 +1,8 @@
-package com.quokkatechsolutions.foodTruckManagement.api.controllers;
+package com.quokkatech.foodtruckmanagement.api.controllers;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.quokkatechsolutions.foodTruckManagement.api.representations.OrderRepresentation;
+import com.quokkatech.foodtruckmanagement.api.representations.OrderRepresentation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

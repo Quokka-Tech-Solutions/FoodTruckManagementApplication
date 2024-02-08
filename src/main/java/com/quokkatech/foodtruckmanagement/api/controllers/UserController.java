@@ -1,7 +1,7 @@
-package com.quokkatechsolutions.foodTruckManagement.api.controllers;
+package com.quokkatech.foodtruckmanagement.api.controllers;
 
-import com.quokkatechsolutions.foodTruckManagement.domain.services.UserService;
-import com.quokkatechsolutions.foodTruckManagement.domain.entities.User;
+import com.quokkatech.foodtruckmanagement.domain.services.UserService;
+import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class UserController {
 
     @GetMapping("/{requestedId}")
     public ResponseEntity<User> findById(@PathVariable Long requestedId) {
-        logger.info("Finding user with ID: {}", requestedId);
+        logger.info("UserController.findById - Finding user with ID: {}", requestedId);
         Optional<User> userOptional = userService.findById(requestedId);
 
         return userOptional
