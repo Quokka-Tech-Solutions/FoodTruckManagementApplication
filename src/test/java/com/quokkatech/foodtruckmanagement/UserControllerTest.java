@@ -1,7 +1,7 @@
 package com.quokkatech.foodtruckmanagement;
 
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
-import com.quokkatech.foodtruckmanagement.domain.services.UserService;
+import com.quokkatech.foodtruckmanagement.application.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

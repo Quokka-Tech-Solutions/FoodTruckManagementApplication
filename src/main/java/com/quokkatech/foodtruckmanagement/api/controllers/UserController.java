@@ -1,6 +1,6 @@
 package com.quokkatech.foodtruckmanagement.api.controllers;
 
-import com.quokkatech.foodtruckmanagement.domain.services.UserService;
+import com.quokkatech.foodtruckmanagement.application.services.UserService;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

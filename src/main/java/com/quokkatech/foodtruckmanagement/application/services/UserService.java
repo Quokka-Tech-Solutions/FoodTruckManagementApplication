@@ -1,4 +1,4 @@
-package com.quokkatech.foodtruckmanagement.domain.services;
+package com.quokkatech.foodtruckmanagement.application.services;
 
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.domain.repositories.UserRepository;

@@ -2,8 +2,8 @@ package com.quokkatech.foodtruckmanagement.api.controllers;
 
 import com.quokkatech.foodtruckmanagement.api.representations.UserRepresentation;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
-import com.quokkatech.foodtruckmanagement.domain.exceptions.UsernameAlreadyExistsException;
-import com.quokkatech.foodtruckmanagement.domain.services.RegistrationService;
+import com.quokkatech.foodtruckmanagement.application.exceptions.UsernameAlreadyExistsException;
+import com.quokkatech.foodtruckmanagement.application.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
