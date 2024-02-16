@@ -1,7 +1,7 @@
 package com.quokkatech.foodtruckmanagement;
 
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
-import com.quokkatech.foodtruckmanagement.application.services.UserService;
+import com.quokkatech.foodtruckmanagement.application.services.UserSessionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +22,7 @@ public class UserControllerTest {
     TestRestTemplate restTemplate;
 
     @MockBean
-    private UserService userService;
+    private UserSessionService userService;
 
 
     @Test

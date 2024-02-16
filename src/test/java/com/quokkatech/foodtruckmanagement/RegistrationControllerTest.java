@@ -1,7 +1,7 @@
 package com.quokkatech.foodtruckmanagement;
 
 import com.quokkatech.foodtruckmanagement.api.controllers.RegistrationController;
-import com.quokkatech.foodtruckmanagement.api.representations.UserRepresentation;
+import com.quokkatech.foodtruckmanagement.api.dto.UserSessionDTO;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.application.exceptions.UsernameAlreadyExistsException;
 import com.quokkatech.foodtruckmanagement.domain.repositories.UserRepository;
@@ -49,9 +49,9 @@ public class RegistrationControllerTest {
 
     @Test
     void registerUserShouldReturnCreatedStatus() {
-        UserRepresentation userRepresentation = new UserRepresentation("testuser", "testpassword", "USER", "Test Company");
+        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "testpassword", "USER", "Test Company");
 
-        ResponseEntity<UserRepresentation> response = restTemplate.postForEntity("/userRegistrations/register", userRepresentation, UserRepresentation.class);
+        ResponseEntity<UserSessionDTO> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, UserSessionDTO.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isNotNull();
@@ -61,13 +61,13 @@ public class RegistrationControllerTest {
 
     @Test
     void registerUserShouldThrowUsernameAlreadyExistsException() {
-        UserRepresentation userRepresentation = new UserRepresentation("existinguser", "testpassword", "USER", "Test Company");
+        UserSessionDTO userRepresentation = new UserSessionDTO("existinguser", "testpassword", "USER", "Test Company");
 
         doThrow(UsernameAlreadyExistsException.class)
                 .when(registrationService)
                 .registerUser(userRepresentation.toUser());
 
-        ResponseEntity<Void> response = restTemplate.postForEntity("/userRegistrations/register", userRepresentation, Void.class);
+        ResponseEntity<Void> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
     }

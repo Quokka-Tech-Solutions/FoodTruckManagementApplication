@@ -1,6 +1,6 @@
 package com.quokkatech.foodtruckmanagement.api.controllers;
 
-import com.quokkatech.foodtruckmanagement.api.representations.UserRepresentation;
+import com.quokkatech.foodtruckmanagement.api.dto.UserSessionDTO;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.application.exceptions.UsernameAlreadyExistsException;
 import com.quokkatech.foodtruckmanagement.application.services.RegistrationService;
@@ -22,8 +22,8 @@ public class RegistrationController {
         this.registrationService=registrationService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<UserRepresentation> registerUser(@RequestBody UserRepresentation userRepresentation) {
+    @PostMapping("")
+    public ResponseEntity<UserSessionDTO> registerUser(@RequestBody UserSessionDTO userRepresentation) {
         try {
             User user = new User();
             user.setUsername(userRepresentation.getUsername());
