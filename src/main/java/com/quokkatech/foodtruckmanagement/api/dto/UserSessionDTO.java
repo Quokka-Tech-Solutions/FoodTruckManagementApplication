@@ -1,8 +1,8 @@
-package com.quokkatech.foodtruckmanagement.api.representations;
+package com.quokkatech.foodtruckmanagement.api.dto;
 
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 
-public class UserRepresentation {
+public class UserSessionDTO {
 
     private String username;
     private String password;
@@ -11,10 +11,10 @@ public class UserRepresentation {
 
     // Constructors, getters, and setters
 
-    public UserRepresentation() {
+    public UserSessionDTO() {
     }
 
-    public UserRepresentation(String username, String password, String role, String company) {
+    public UserSessionDTO(String username, String password, String role, String company) {
         this.username = username;
         this.password = password;
         this.role = role;
