@@ -4,6 +4,7 @@ import com.quokkatech.foodtruckmanagement.api.dto.UserSessionDTO;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.application.exceptions.UsernameAlreadyExistsException;
 import com.quokkatech.foodtruckmanagement.application.services.RegistrationService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,21 +24,18 @@ public class RegistrationController {
     }
 
     @PostMapping("")
-    public ResponseEntity<UserSessionDTO> registerUser(@RequestBody UserSessionDTO userRepresentation) {
+    public ResponseEntity<UserSessionDTO> registerUser(@RequestBody UserSessionDTO userSessionDTO) {
         try {
-            User user = new User();
-            user.setUsername(userRepresentation.getUsername());
-            user.setPassword(userRepresentation.getPassword());
-            user.setRole(userRepresentation.getRole());
-            user.setCompany(userRepresentation.getCompany());
+            ModelMapper modelMapper = new ModelMapper();
+            User user = modelMapper.map(userSessionDTO, User.class);
 
             registrationService.registerUser(user);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(userRepresentation);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userSessionDTO);
         } catch (UsernameAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userRepresentation);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userSessionDTO);
         }
     }
 }
