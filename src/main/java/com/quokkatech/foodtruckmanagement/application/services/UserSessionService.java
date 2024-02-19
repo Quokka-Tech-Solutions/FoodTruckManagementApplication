@@ -20,6 +20,7 @@ public class UserSessionService {
     public Optional<User> findById(long id) {
         return userRepository.findById(id);
     }
+    public Optional<User> findByUsername(String username){return Optional.ofNullable(userRepository.findByUsername(username));}
 
     public List<User> findAllUsers(){
         return userRepository.findAll();
