@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserControllerTest {
+public class UserSessionControllerTest {
     @Autowired
     TestRestTemplate restTemplate;
 
@@ -31,6 +31,15 @@ public class UserControllerTest {
         when(userService.findById(1L)).thenReturn(Optional.of(mockUser));
 
         ResponseEntity<User> response = restTemplate.getForEntity("/userSessions/1", User.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+    }
+    @Test
+    void shouldReturnAUserByUsername(){
+        User mockUser = new User();
+        when(userService.findByUsername("username")).thenReturn(Optional.of(mockUser));
+
+        ResponseEntity<User> response = restTemplate.getForEntity("/userSessions/username/username", User.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
     }

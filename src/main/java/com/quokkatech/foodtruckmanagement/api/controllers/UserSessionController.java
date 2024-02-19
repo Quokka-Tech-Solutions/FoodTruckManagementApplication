@@ -33,8 +33,8 @@ public class UserSessionController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    @GetMapping("/{username}")
-    public ResponseEntity<User> findByUsername(@PathVariable String username){
+    @GetMapping("username/{username}")
+    public ResponseEntity<User> findByUsername(@PathVariable ("username") String username){
         logger.info("UserController.findByUsername - Finding user with username: {}", username);
         Optional<User> userOptional = userSessionService.findByUsername(username);
         return userOptional
@@ -43,24 +43,24 @@ public class UserSessionController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<UserSessionDTO> registerUser(@RequestBody UserSessionDTO userRepresentation) {
+    public ResponseEntity<UserSessionDTO> createUserSession(@RequestBody UserSessionDTO userSessionDTO) {
         try {
             User user = new User();
-            user.setUsername(userRepresentation.getUsername());
-            user.setPassword(userRepresentation.getPassword());
-            user.setRole(userRepresentation.getRole());
-            user.setCompany(userRepresentation.getCompany());
+            user.setUsername(userSessionDTO.getUsername());
+            user.setPassword(userSessionDTO.getPassword());
+            user.setRole(userSessionDTO.getRole());
+            user.setCompany(userSessionDTO.getCompany());
 
             var token = userSessionService.createUserSession(user);
 
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.set("Authentication", token);
-            userRepresentation.setPassword("**********");
-            return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(userRepresentation);
+            userSessionDTO.setPassword("**********");
+            return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(userSessionDTO);
         } catch (UsernameDoesNotExistException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userRepresentation);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userSessionDTO);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(userRepresentation);
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(userSessionDTO);
         }
     }
 /*    @GetMapping()
