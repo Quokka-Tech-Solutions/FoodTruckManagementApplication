@@ -24,11 +24,19 @@ public class UserSessionController {
         this.userSessionService=userSessionService;
     }
 
-    @GetMapping("/{requestedId}")
-    public ResponseEntity<User> findById(@PathVariable Long requestedId) {
-        logger.info("UserController.findById - Finding user with ID: {}", requestedId);
-        Optional<User> userOptional = userSessionService.findById(requestedId);
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> findByUserId(@PathVariable Long userId) {
+        logger.info("UserController.findById - Finding user with ID: {}", userId);
+        Optional<User> userOptional = userSessionService.findById(userId);
 
+        return userOptional
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    @GetMapping("/{username}")
+    public ResponseEntity<User> findByUsername(@PathVariable String username){
+        logger.info("UserController.findByUsername - Finding user with username: {}", username);
+        Optional<User> userOptional = userSessionService.findByUsername(username);
         return userOptional
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
