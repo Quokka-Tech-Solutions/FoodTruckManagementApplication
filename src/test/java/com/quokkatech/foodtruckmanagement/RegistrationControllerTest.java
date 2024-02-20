@@ -49,7 +49,7 @@ public class RegistrationControllerTest {
 
     @Test
     void registerUserShouldReturnCreatedStatus() {
-        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "testpassword", "USER", "Test Company");
+        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "Testpassword@1", "USER", "Test Company");
 
         ResponseEntity<UserSessionDTO> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, UserSessionDTO.class);
 
@@ -61,7 +61,7 @@ public class RegistrationControllerTest {
 
     @Test
     void registerUserShouldThrowUsernameAlreadyExistsException() {
-        UserSessionDTO userRepresentation = new UserSessionDTO("existinguser", "testpassword", "USER", "Test Company");
+        UserSessionDTO userRepresentation = new UserSessionDTO("existinguser", "Testpassword@1", "USER", "Test Company");
 
         doThrow(UsernameAlreadyExistsException.class)
                 .when(registrationService)
@@ -70,5 +70,25 @@ public class RegistrationControllerTest {
         ResponseEntity<Void> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+    }
+
+    @Test
+    void registerUserShouldReturnCreatedStatusForValidPassword() {
+        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "Test@1234", "USER", "Test Company");
+
+        ResponseEntity<UserSessionDTO> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, UserSessionDTO.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getUsername()).isEqualTo("testuser");
+    }
+
+    @Test
+    void registerUserShouldReturnBadRequestForInvalidPassword() {
+        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "weakpassword", "USER", "Test Company");
+
+        ResponseEntity<Void> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }

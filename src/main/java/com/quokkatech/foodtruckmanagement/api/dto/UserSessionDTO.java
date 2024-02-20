@@ -1,10 +1,12 @@
 package com.quokkatech.foodtruckmanagement.api.dto;
 
+import com.quokkatech.foodtruckmanagement.api.passwordValidation.ValidPassword;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 
 public class UserSessionDTO {
 
     private String username;
+    @ValidPassword
     private String password;
     private String role;
     private String company;
