@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -63,11 +64,10 @@ public class UserSessionController {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(userSessionDTO);
         }
     }
-/*    @GetMapping()
-    public ResponseEntity<List<User>> getAllUsers(){
-        List<User> userList = userService.findAllUsers();
+    @GetMapping()
+    public ResponseEntity<List<User>> getAllUserSessions(){
+        List<User> userList = userSessionService.findAllUsers();
         return ResponseEntity.ok(List.of(userList.toArray(new User[0])));
     }
-*/
 
 }
