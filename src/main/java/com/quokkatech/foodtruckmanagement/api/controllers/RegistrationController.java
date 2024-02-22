@@ -4,6 +4,7 @@ import com.quokkatech.foodtruckmanagement.api.dto.UserSessionDTO;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.application.exceptions.UsernameAlreadyExistsException;
 import com.quokkatech.foodtruckmanagement.application.services.RegistrationService;
+import com.quokkatech.foodtruckmanagement.api.passwordEncoding.SecurityConfig;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/userRegistrations")
 public class RegistrationController {
     private final RegistrationService registrationService;
-
     @Autowired
     public RegistrationController(RegistrationService registrationService) {
         this.registrationService=registrationService;
@@ -29,7 +29,6 @@ public class RegistrationController {
         try {
             ModelMapper modelMapper = new ModelMapper();
             User user = modelMapper.map(userSessionDTO, User.class);
-
             registrationService.registerUser(user);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(userSessionDTO);
