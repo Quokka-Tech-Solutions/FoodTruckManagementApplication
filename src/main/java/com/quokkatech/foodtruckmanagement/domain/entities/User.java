@@ -1,9 +1,6 @@
 package com.quokkatech.foodtruckmanagement.domain.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -33,6 +30,9 @@ public class User{
         this.role = role;
         this.company = company;
     }
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Profile profile;
 
     public Long getUserId() {
         return userId;
