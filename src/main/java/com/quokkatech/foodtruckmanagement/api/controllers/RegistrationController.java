@@ -1,5 +1,6 @@
 package com.quokkatech.foodtruckmanagement.api.controllers;
 
+import com.quokkatech.foodtruckmanagement.api.dto.ProfileDTO;
 import com.quokkatech.foodtruckmanagement.api.dto.UserSessionDTO;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.application.exceptions.UsernameAlreadyExistsException;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/userRegistrations")
 public class RegistrationController {
     private final RegistrationService registrationService;
-
     @Autowired
     public RegistrationController(RegistrationService registrationService) {
         this.registrationService=registrationService;
@@ -29,8 +29,14 @@ public class RegistrationController {
         try {
             ModelMapper modelMapper = new ModelMapper();
             User user = modelMapper.map(userSessionDTO, User.class);
-
             registrationService.registerUser(user);
+
+            // Check if profile information is present in the request and create the profile
+            if (userSessionDTO.getProfileDTO() != null) {
+                ProfileDTO profileDTO = userSessionDTO.getProfileDTO();
+                registrationService.createProfile(user, profileDTO);
+            }
+
 
             return ResponseEntity.status(HttpStatus.CREATED).body(userSessionDTO);
         } catch (UsernameAlreadyExistsException e) {

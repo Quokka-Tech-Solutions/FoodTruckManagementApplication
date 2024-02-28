@@ -1,4 +1,4 @@
-package com.quokkatech.foodtruckmanagement;
+package com.quokkatech.foodtruckmanagement.integrationTests;
 
 import com.quokkatech.foodtruckmanagement.api.controllers.RegistrationController;
 import com.quokkatech.foodtruckmanagement.api.dto.UserSessionDTO;
@@ -49,7 +49,7 @@ public class RegistrationControllerTest {
 
     @Test
     void registerUserShouldReturnCreatedStatus() {
-        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "Testpassword@1", "USER", "Test Company");
+        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "Testpassword@1", "USER", "Test Company",null);
 
         ResponseEntity<UserSessionDTO> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, UserSessionDTO.class);
 
@@ -61,7 +61,7 @@ public class RegistrationControllerTest {
 
     @Test
     void registerUserShouldThrowUsernameAlreadyExistsException() {
-        UserSessionDTO userRepresentation = new UserSessionDTO("existinguser", "Testpassword@1", "USER", "Test Company");
+        UserSessionDTO userRepresentation = new UserSessionDTO("existinguser", "Testpassword@1", "USER", "Test Company",null);
 
         doThrow(UsernameAlreadyExistsException.class)
                 .when(registrationService)
@@ -74,7 +74,7 @@ public class RegistrationControllerTest {
 
     @Test
     void registerUserShouldReturnCreatedStatusForValidPassword() {
-        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "Test@1234", "USER", "Test Company");
+        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "Test@1234", "USER", "Test Company",null);
 
         ResponseEntity<UserSessionDTO> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, UserSessionDTO.class);
 
@@ -85,7 +85,7 @@ public class RegistrationControllerTest {
 
     @Test
     void registerUserShouldReturnBadRequestForInvalidPassword() {
-        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "weakpassword", "USER", "Test Company");
+        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "weakpassword", "USER", "Test Company",null);
 
         ResponseEntity<Void> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, Void.class);
 

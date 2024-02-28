@@ -10,17 +10,19 @@ public class UserSessionDTO {
     private String password;
     private String role;
     private String company;
+    private ProfileDTO profileDTO;
 
     // Constructors, getters, and setters
 
     public UserSessionDTO() {
     }
 
-    public UserSessionDTO(String username, String password, String role, String company) {
+    public UserSessionDTO(String username, String password, String role, String company, ProfileDTO profileDTO) {
         this.username = username;
         this.password = password;
         this.role = role;
         this.company = company;
+        this.profileDTO = profileDTO;
     }
 
     // Getters and setters
@@ -56,8 +58,18 @@ public class UserSessionDTO {
     public void setCompany(String company) {
         this.company = company;
     }
+
+    public ProfileDTO getProfileDTO() {
+        return profileDTO;
+    }
+
+    public void setProfileDTO(ProfileDTO profileDTO) {
+        this.profileDTO = profileDTO;
+    }
+
     public User toUser() {
         // Create and return a User entity using the data from the representation
         return new User(null, username, password, role, company);
     }
+
 }
