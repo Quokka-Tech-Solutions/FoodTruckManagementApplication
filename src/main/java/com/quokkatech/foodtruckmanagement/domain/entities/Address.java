@@ -7,6 +7,7 @@ import java.util.Objects;
 @Entity
 public class Address {
 
+    @Id
     private String street;
     private String city;
     private String state;
