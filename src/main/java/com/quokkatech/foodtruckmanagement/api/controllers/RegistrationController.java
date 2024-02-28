@@ -5,7 +5,6 @@ import com.quokkatech.foodtruckmanagement.api.dto.UserSessionDTO;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.application.exceptions.UsernameAlreadyExistsException;
 import com.quokkatech.foodtruckmanagement.application.services.RegistrationService;
-import com.quokkatech.foodtruckmanagement.api.passwordEncoding.SecurityConfig;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

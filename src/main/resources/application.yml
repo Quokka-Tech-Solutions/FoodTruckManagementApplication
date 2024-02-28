@@ -1,6 +1,10 @@
 server:
   port: 8080
 spring:
+  security:
+    user:
+      name: admin
+      password: Password1%
   datasource:
     url: jdbc:h2:mem:foodTruckDB;NON_KEYWORDS=user
     driverClassName: org.h2.Driver
