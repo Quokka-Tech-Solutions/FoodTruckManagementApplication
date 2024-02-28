@@ -1,4 +1,4 @@
-package com.quokkatech.foodtruckmanagement;
+package com.quokkatech.foodtruckmanagement.integrationTests;
 
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.application.services.UserSessionService;

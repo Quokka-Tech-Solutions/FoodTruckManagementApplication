@@ -1,4 +1,4 @@
-package com.quokkatech.foodtruckmanagement;
+package com.quokkatech.foodtruckmanagement.integrationTests;
 
 import com.quokkatech.foodtruckmanagement.api.controllers.RegistrationController;
 import com.quokkatech.foodtruckmanagement.api.dto.UserSessionDTO;

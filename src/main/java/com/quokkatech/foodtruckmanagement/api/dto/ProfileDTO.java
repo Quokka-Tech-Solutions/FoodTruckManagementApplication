@@ -4,6 +4,8 @@ import com.quokkatech.foodtruckmanagement.domain.entities.Address;
 import com.quokkatech.foodtruckmanagement.domain.entities.Profile;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 
+import java.util.Objects;
+
 public class ProfileDTO {
     private Long profileId;
 
@@ -50,5 +52,18 @@ public class ProfileDTO {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProfileDTO that = (ProfileDTO) o;
+        return Objects.equals(profileId, that.profileId) && Objects.equals(homeAddress, that.homeAddress) && Objects.equals(companyAddress, that.companyAddress) && Objects.equals(user, that.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(profileId, homeAddress, companyAddress, user);
     }
 }
