@@ -4,6 +4,11 @@ services:
   db:
     image: 'postgres:13.1-alpine'
     container_name: db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       - POSTGRES_DB=foodtruck
       - POSTGRES_USER=compose-postgres
@@ -21,7 +26,8 @@ services:
       context: .
     container_name: app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - DB_SERVER=db
       - POSTGRES_DB=foodtruck
@@ -39,7 +45,8 @@ services:
     environment:
       ADMINER_DEFAULT_SERVER: db
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - db
 networks:
