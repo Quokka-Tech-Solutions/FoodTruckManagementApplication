@@ -26,6 +26,7 @@ dependencies {
     implementation 'org.passay:passay:1.6.3'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'jakarta.validation:jakarta.validation-api:3.0.1'
+    testImplementation 'com.h2database:h2'
     //runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.postgresql:postgresql'
 }
