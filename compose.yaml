@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   db:
@@ -16,12 +16,12 @@ services:
     volumes:
       - db_data:/data/postgres
     ports:
-      - 5432:5432
+      - "5432:5432"
     networks:
       - db
 
   app:
-    image: 'docker-spring-boot-postgres:latest'
+    image: 'food-truck-management:latest'
     build:
       context: .
     container_name: app
@@ -31,17 +31,18 @@ services:
     environment:
       - DB_SERVER=db
       - POSTGRES_DB=foodtruck
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/foodtruck
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8080:8080"
     networks:
       - db
 
   adminer:
     image: adminer
     ports:
-      - 8080:8080
+      - "8081:8081"
     environment:
       ADMINER_DEFAULT_SERVER: db
     depends_on:
