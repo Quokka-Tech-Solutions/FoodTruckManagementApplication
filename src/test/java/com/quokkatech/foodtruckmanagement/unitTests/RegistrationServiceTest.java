@@ -1,6 +1,6 @@
 package com.quokkatech.foodtruckmanagement.unitTests;
 
-import com.quokkatech.foodtruckmanagement.api.dto.ProfileDTO;
+import com.quokkatech.foodtruckmanagement.api.request.ProfileRequest;
 import com.quokkatech.foodtruckmanagement.application.services.RegistrationService;
 import com.quokkatech.foodtruckmanagement.domain.entities.Profile;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
@@ -71,7 +71,7 @@ public class RegistrationServiceTest {
     void testCreateProfile() {
         // Arrange
         User user = new User(null, "testuser", "password", "USER", "Test Company");
-        ProfileDTO profileDTO = new ProfileDTO(1L, null, null, null);
+        ProfileRequest profileDTO = new ProfileRequest(1L, null, null, null);
 
         // Mock the behavior
         when(profileRepository.save(any())).thenReturn(new Profile());

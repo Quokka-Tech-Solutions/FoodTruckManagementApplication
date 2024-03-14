@@ -1,6 +1,7 @@
 package com.quokkatech.foodtruckmanagement.api.controllers;
 
-import com.quokkatech.foodtruckmanagement.api.dto.UserSessionDTO;
+import com.quokkatech.foodtruckmanagement.api.request.UserSessionRequest;
+import com.quokkatech.foodtruckmanagement.api.response.UserSessionResponse;
 import com.quokkatech.foodtruckmanagement.application.exceptions.UsernameDoesNotExistException;
 import com.quokkatech.foodtruckmanagement.application.services.UserSessionService;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
@@ -44,24 +45,26 @@ public class UserSessionController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<UserSessionDTO> createUserSession(@RequestBody UserSessionDTO userSessionDTO) {
+    public ResponseEntity<UserSessionResponse> createUserSession(@RequestBody UserSessionRequest userSessionRequest) {
         try {
             User user = new User();
-            user.setUsername(userSessionDTO.getUsername());
-            user.setPassword(userSessionDTO.getPassword());
-            user.setRole(userSessionDTO.getRole());
-            user.setCompany(userSessionDTO.getCompany());
+            user.setUsername(userSessionRequest.getUsername());
+            user.setPassword(userSessionRequest.getPassword());
+            user.setRole(userSessionRequest.getRole());
+            user.setCompany(userSessionRequest.getCompany());
 
             var token = userSessionService.createUserSession(user);
 
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.set("Authentication", token);
-            userSessionDTO.setPassword("**********");
-            return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(userSessionDTO);
+            userSessionRequest.setPassword("**********");
+
+            UserSessionResponse userSessionResponse = new UserSessionResponse(userSessionRequest.getUsername(), userSessionRequest.getRole(), userSessionRequest.getCompany(), userSessionRequest.getProfileRequest());
+            return ResponseEntity.status(HttpStatus.CREATED).headers(httpHeaders).body(userSessionResponse);
         } catch (UsernameDoesNotExistException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userSessionDTO);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserSessionResponse(userSessionRequest.getUsername(), userSessionRequest.getRole(), userSessionRequest.getCompany(), userSessionRequest.getProfileRequest()));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(userSessionDTO);
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new UserSessionResponse(userSessionRequest.getUsername(), userSessionRequest.getRole(), userSessionRequest.getCompany(), userSessionRequest.getProfileRequest()));
         }
     }
     @GetMapping()
