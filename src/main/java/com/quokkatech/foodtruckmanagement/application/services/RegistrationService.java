@@ -1,6 +1,6 @@
 package com.quokkatech.foodtruckmanagement.application.services;
 
-import com.quokkatech.foodtruckmanagement.api.dto.ProfileDTO;
+import com.quokkatech.foodtruckmanagement.api.request.ProfileRequest;
 import com.quokkatech.foodtruckmanagement.domain.entities.Profile;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.application.exceptions.UsernameAlreadyExistsException;
@@ -29,13 +29,13 @@ public class RegistrationService {
         userRepository.save(user);
     }
 
-    public void createProfile(User user, ProfileDTO profileDTO) {
+    public void createProfile(User user, ProfileRequest profileRequest) {
         // Create a new profile and associate it with the user
         Profile profile = new Profile();
         profile.setUser(user);
-        profile.setProfileId(profileDTO.getProfileId());
-        profile.setHomeAddress(profileDTO.getHomeAddress());
-        profile.setCompanyAddress(profileDTO.getCompanyAddress());
+        profile.setProfileId(profileRequest.getProfileId());
+        profile.setHomeAddress(profileRequest.getHomeAddress());
+        profile.setCompanyAddress(profileRequest.getCompanyAddress());
         profileRepository.save(profile);
     }
 }

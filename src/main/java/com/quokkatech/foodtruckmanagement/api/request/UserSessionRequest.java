@@ -1,28 +1,28 @@
-package com.quokkatech.foodtruckmanagement.api.dto;
+package com.quokkatech.foodtruckmanagement.api.request;
 
 import com.quokkatech.foodtruckmanagement.api.passwordValidation.ValidPassword;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 
-public class UserSessionDTO {
+public class UserSessionRequest {
 
     private String username;
     @ValidPassword
     private String password;
     private String role;
     private String company;
-    private ProfileDTO profileDTO;
+    private ProfileRequest profileRequest;
 
     // Constructors, getters, and setters
 
-    public UserSessionDTO() {
+    public UserSessionRequest() {
     }
 
-    public UserSessionDTO(String username, String password, String role, String company, ProfileDTO profileDTO) {
+    public UserSessionRequest(String username, String password, String role, String company, ProfileRequest profileRequest) {
         this.username = username;
         this.password = password;
         this.role = role;
         this.company = company;
-        this.profileDTO = profileDTO;
+        this.profileRequest = profileRequest;
     }
 
     // Getters and setters
@@ -59,12 +59,12 @@ public class UserSessionDTO {
         this.company = company;
     }
 
-    public ProfileDTO getProfileDTO() {
-        return profileDTO;
+    public ProfileRequest getProfileRequest() {
+        return profileRequest;
     }
 
-    public void setProfileDTO(ProfileDTO profileDTO) {
-        this.profileDTO = profileDTO;
+    public void setProfileRequest(ProfileRequest profileRequest) {
+        this.profileRequest = profileRequest;
     }
 
     public User toUser() {

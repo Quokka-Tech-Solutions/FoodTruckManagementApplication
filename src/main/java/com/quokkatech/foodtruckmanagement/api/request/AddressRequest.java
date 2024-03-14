@@ -1,14 +1,14 @@
-package com.quokkatech.foodtruckmanagement.api.dto;
+package com.quokkatech.foodtruckmanagement.api.request;
 
-public class AddressDTO {
+public class AddressRequest {
     private String street;
     private String city;
     private String state;
     private String zipCode;
 
-    public AddressDTO() {}
+    public AddressRequest() {}
 
-    public AddressDTO(String street, String city, String state, String zipCode) {
+    public AddressRequest(String street, String city, String state, String zipCode) {
         this.street = street;
         this.city = city;
         this.state = state;

@@ -1,7 +1,8 @@
 package com.quokkatech.foodtruckmanagement.integrationTests;
 
 import com.quokkatech.foodtruckmanagement.api.controllers.RegistrationController;
-import com.quokkatech.foodtruckmanagement.api.dto.UserSessionDTO;
+import com.quokkatech.foodtruckmanagement.api.request.UserSessionRequest;
+import com.quokkatech.foodtruckmanagement.api.response.UserSessionResponse;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.application.exceptions.UsernameAlreadyExistsException;
 import com.quokkatech.foodtruckmanagement.domain.repositories.UserRepository;
@@ -54,9 +55,9 @@ public class RegistrationControllerTest {
 
     @Test
     void registerUserShouldReturnCreatedStatus() {
-        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "Testpassword@1", "USER", "Test Company",null);
+        UserSessionRequest userSessionRequest = new UserSessionRequest("testuser", "Testpassword@1", "USER", "Test Company",null);
 
-        ResponseEntity<UserSessionDTO> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, UserSessionDTO.class);
+        ResponseEntity<UserSessionRequest> response = restTemplate.postForEntity("/userRegistrations", userSessionRequest, UserSessionRequest.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isNotNull();
@@ -66,22 +67,22 @@ public class RegistrationControllerTest {
 
     @Test
     void registerUserShouldThrowUsernameAlreadyExistsException() {
-        UserSessionDTO userRepresentation = new UserSessionDTO("existinguser", "Testpassword@1", "USER", "Test Company",null);
+        UserSessionRequest userSessionRequest = new UserSessionRequest("existinguser", "Testpassword@1", "USER", "Test Company",null);
 
         doThrow(UsernameAlreadyExistsException.class)
                 .when(registrationService)
-                .registerUser(userRepresentation.toUser());
+                .registerUser(userSessionRequest.toUser());
 
-        ResponseEntity<Void> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, Void.class);
+        ResponseEntity<Void> response = restTemplate.postForEntity("/userRegistrations", userSessionRequest, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
     }
 
     @Test
     void registerUserShouldReturnCreatedStatusForValidPassword() {
-        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "Test@1234", "USER", "Test Company",null);
+        UserSessionRequest userSessionRequest = new UserSessionRequest("testuser", "Test@1234", "USER", "Test Company",null);
 
-        ResponseEntity<UserSessionDTO> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, UserSessionDTO.class);
+        ResponseEntity<UserSessionResponse> response = restTemplate.postForEntity("/userRegistrations", userSessionRequest, UserSessionResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isNotNull();
@@ -90,9 +91,9 @@ public class RegistrationControllerTest {
 
     @Test
     void registerUserShouldReturnBadRequestForInvalidPassword() {
-        UserSessionDTO userRepresentation = new UserSessionDTO("testuser", "weakpassword", "USER", "Test Company",null);
+        UserSessionRequest userSessionRequest = new UserSessionRequest("testuser", "weakpassword", "USER", "Test Company",null);
 
-        ResponseEntity<Void> response = restTemplate.postForEntity("/userRegistrations", userRepresentation, Void.class);
+        ResponseEntity<Void> response = restTemplate.postForEntity("/userRegistrations", userSessionRequest, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }

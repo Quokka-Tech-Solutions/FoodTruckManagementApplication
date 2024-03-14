@@ -1,7 +1,8 @@
 package com.quokkatech.foodtruckmanagement.api.controllers;
 
-import com.quokkatech.foodtruckmanagement.api.dto.ProfileDTO;
-import com.quokkatech.foodtruckmanagement.api.dto.UserSessionDTO;
+import com.quokkatech.foodtruckmanagement.api.request.ProfileRequest;
+import com.quokkatech.foodtruckmanagement.api.request.UserSessionRequest;
+import com.quokkatech.foodtruckmanagement.api.response.UserSessionResponse;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.application.exceptions.UsernameAlreadyExistsException;
 import com.quokkatech.foodtruckmanagement.application.services.RegistrationService;
@@ -25,24 +26,25 @@ public class RegistrationController {
     }
 
     @PostMapping("")
-    public ResponseEntity<UserSessionDTO> registerUser(@Valid @RequestBody UserSessionDTO userSessionDTO) {
+    public ResponseEntity<UserSessionResponse> registerUser(@Valid @RequestBody UserSessionRequest userSessionRequest) {
         try {
             ModelMapper modelMapper = new ModelMapper();
-            User user = modelMapper.map(userSessionDTO, User.class);
+            User user = modelMapper.map(userSessionRequest, User.class);
             registrationService.registerUser(user);
 
             // Check if profile information is present in the request and create the profile
-            if (userSessionDTO.getProfileDTO() != null) {
-                ProfileDTO profileDTO = userSessionDTO.getProfileDTO();
-                registrationService.createProfile(user, profileDTO);
+            if (userSessionRequest.getProfileRequest() != null) {
+                ProfileRequest profileRequest = userSessionRequest.getProfileRequest();
+                registrationService.createProfile(user, profileRequest);
             }
 
+            UserSessionResponse userSessionResponse = new UserSessionResponse(userSessionRequest.getUsername(), userSessionRequest.getRole(), userSessionRequest.getCompany(),userSessionRequest.getProfileRequest());
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(userSessionDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userSessionResponse);
         } catch (UsernameAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userSessionDTO);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserSessionResponse(userSessionRequest.getUsername(), userSessionRequest.getRole(), userSessionRequest.getCompany(),userSessionRequest.getProfileRequest()));
         }
     }
 }
