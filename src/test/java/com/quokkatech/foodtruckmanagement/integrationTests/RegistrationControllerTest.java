@@ -57,7 +57,7 @@ public class RegistrationControllerTest {
     void registerUserShouldReturnCreatedStatus() {
         UserSessionRequest userSessionRequest = new UserSessionRequest("testuser", "Testpassword@1", "USER", "Test Company",null);
 
-        ResponseEntity<UserSessionRequest> response = restTemplate.postForEntity("/userRegistrations", userSessionRequest, UserSessionRequest.class);
+        ResponseEntity<UserSessionResponse> response = restTemplate.postForEntity("/userRegistrations", userSessionRequest, UserSessionResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isNotNull();

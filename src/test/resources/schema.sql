@@ -7,3 +7,4 @@ CREATE TABLE users (
     role VARCHAR(255) NOT NULL,
     company VARCHAR(255) NOT NULL
 );
+
