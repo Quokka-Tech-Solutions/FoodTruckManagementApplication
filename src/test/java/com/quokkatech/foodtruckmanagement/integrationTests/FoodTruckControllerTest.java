@@ -23,8 +23,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -55,6 +58,28 @@ public class FoodTruckControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getTruckName()).isEqualTo("FoodTruck1");
+    }
+
+    @Test
+    void getFoodTruckByIdShouldReturnFoodTruckById(){
+        FoodTruck mockTruck = new FoodTruck(1L,"FoodTruck1", new User(1L,"user","password","OWNER", "TestCompany"));
+        when(foodTruckService.findById(1L)).thenReturn(Optional.of(mockTruck));
+
+        ResponseEntity<FoodTruck> response = restTemplate.getForEntity("/truckRegistrations/1",FoodTruck.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getTruckId()).isEqualTo(1L);
+    }
+
+    @Test
+    void getFoodTruckByNameShouldReturnFoodTruckByName(){
+        FoodTruck mockTruck = new FoodTruck(1L,"FoodTruck1", new User(1L,"user","password","OWNER", "TestCompany"));
+        when(foodTruckService.findByName("FoodTruck1")).thenReturn(Optional.of(mockTruck));
+
+        ResponseEntity<FoodTruck> response = restTemplate.getForEntity("/truckRegistrations/truck/FoodTruck1",FoodTruck.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getName()).isEqualTo("FoodTruck1");
     }
 
 }

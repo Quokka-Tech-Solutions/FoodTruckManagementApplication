@@ -55,7 +55,7 @@ public class FoodTruckController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    @GetMapping("/truck/{truckName}")
+    @GetMapping("/truck/{name}")
     public ResponseEntity<FoodTruck> getFoodTruckByName(@PathVariable String name){
         logger.info("UserController.findByName - Finding truck with name: {}", name);
 
