@@ -4,6 +4,7 @@ import com.quokkatech.foodtruckmanagement.application.services.FoodTruckService;
 import com.quokkatech.foodtruckmanagement.domain.entities.FoodTruck;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 import com.quokkatech.foodtruckmanagement.domain.repositories.FoodTruckRepository;
+import com.quokkatech.foodtruckmanagement.domain.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,12 +17,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class FoodTruckServiceTest {
     @Mock
     private FoodTruckRepository foodTruckRepository;
+    @Mock
+    private UserRepository userRepository;
     @InjectMocks
     private FoodTruckService foodTruckService;
 
@@ -48,6 +52,7 @@ public class FoodTruckServiceTest {
 
         // Mock the repository behavior
         Mockito.when(foodTruckRepository.findAllByUser(mockUser)).thenReturn(expectedFoodTrucks);
+        Mockito.when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockUser));
 
         // Act
         List<FoodTruck> actualFoodTrucks = foodTruckService.getAllFoodTrucksByUserId(mockUser.getUserId());
