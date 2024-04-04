@@ -1,12 +1,13 @@
 package com.quokkatech.foodtruckmanagement.domain.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+
+import java.util.Objects;
 
 @Entity
 public class FoodTruck {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long truckId;
     private String name;
 
@@ -43,5 +44,19 @@ public class FoodTruck {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FoodTruck foodTruck = (FoodTruck) o;
+        return Objects.equals(truckId, foodTruck.truckId) && Objects.equals(name, foodTruck.name) && Objects.equals(user, foodTruck.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(truckId, name, user);
     }
 }

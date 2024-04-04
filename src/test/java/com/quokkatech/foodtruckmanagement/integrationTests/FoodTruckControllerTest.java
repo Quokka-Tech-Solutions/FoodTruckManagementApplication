@@ -23,8 +23,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -80,6 +83,20 @@ public class FoodTruckControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getName()).isEqualTo("FoodTruck1");
+    }
+
+    @Test
+    void getListOfFoodTrucksShouldReturnList(){
+        FoodTruck mockTruck1 = new FoodTruck(1L,"FoodTruck1", new User(1L,"user","password","OWNER", "TestCompany"));
+        FoodTruck mockTruck2 = new FoodTruck(2L,"FoodTruck2", new User(1L,"user2","password","OWNER", "TestCompany"));
+        when(foodTruckService.getAllFoodTrucksByUserId(1L)).thenReturn(Arrays.asList(mockTruck1, mockTruck2));
+
+        ResponseEntity <FoodTruck[]> response = restTemplate.getForEntity("/truckRegistrations/user/1",FoodTruck[].class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        FoodTruck[] foodTrucks = response.getBody();
+        assertThat(foodTrucks).isNotNull();
+        assertThat(foodTrucks).hasSize(2);
     }
 
 }

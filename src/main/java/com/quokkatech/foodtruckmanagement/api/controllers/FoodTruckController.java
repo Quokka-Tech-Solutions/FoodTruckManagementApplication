@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -47,7 +48,7 @@ public class FoodTruckController {
 
     @GetMapping("/{truckId}")
     public ResponseEntity<FoodTruck> getFoodTruckById(@PathVariable Long truckId){
-        logger.info("UserController.findById - Finding truck with ID: {}", truckId);
+        logger.info("FoodTruckController.findById - Finding truck with ID: {}", truckId);
 
         Optional<FoodTruck> foodTruckOptional = foodTruckService.findById(truckId);
 
@@ -57,7 +58,7 @@ public class FoodTruckController {
     }
     @GetMapping("/truck/{name}")
     public ResponseEntity<FoodTruck> getFoodTruckByName(@PathVariable String name){
-        logger.info("UserController.findByName - Finding truck with name: {}", name);
+        logger.info("FoodTruckController.findByName - Finding truck with name: {}", name);
 
         Optional<FoodTruck> foodTruckOptional = foodTruckService.findByName(name);
 
@@ -65,4 +66,14 @@ public class FoodTruckController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<FoodTruck>> getAllFoodTrucksByUserId(@PathVariable Long userId){
+        logger.info("FoodTruckController.findAllByUser- finding all trucks with user: {}", userId);
+
+        List<FoodTruck> foodTrucks = foodTruckService.getAllFoodTrucksByUserId(userId);
+
+        return ResponseEntity.ok(List.of(foodTrucks.toArray(new FoodTruck[0])));
+    }
+
 }
