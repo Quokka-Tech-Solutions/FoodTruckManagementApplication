@@ -15,11 +15,13 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class FoodTruckServiceTest {
     @Mock
@@ -51,8 +53,8 @@ public class FoodTruckServiceTest {
         List<FoodTruck> expectedFoodTrucks = Arrays.asList(mockTruck1, mockTruck2);
 
         // Mock the repository behavior
-        Mockito.when(foodTruckRepository.findAllByUser(mockUser)).thenReturn(expectedFoodTrucks);
-        Mockito.when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockUser));
+        when(foodTruckRepository.findAllByUser(mockUser)).thenReturn(expectedFoodTrucks);
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockUser));
 
         // Act
         List<FoodTruck> actualFoodTrucks = foodTruckService.getAllFoodTrucksByUserId(mockUser.getUserId());
@@ -60,5 +62,43 @@ public class FoodTruckServiceTest {
         // Assert
         Assertions.assertEquals(expectedFoodTrucks, actualFoodTrucks);
     }
+
+    @Test
+    void updateFoodTruck_shouldUpdateFoodTruckAndReturnUpdatedTruck() {
+        // Arrange
+        Long truckId = 1L;
+        User mockUser = new User(1L, "user", "password", "OWNER", "TestCompany");
+        FoodTruck existingTruck = new FoodTruck(truckId, "FoodTruck1", mockUser);
+        FoodTruck updatedTruck = new FoodTruck(truckId, "UpdatedFoodTruck", new User(2L, "newUser", "newPassword", "OWNER", "NewTestCompany"));
+
+        when(foodTruckRepository.findById(truckId)).thenReturn(Optional.of(existingTruck));
+        when(foodTruckRepository.save(any(FoodTruck.class))).thenReturn(updatedTruck);
+
+        // Act
+        FoodTruck result = foodTruckService.updateFoodTruck(truckId, updatedTruck);
+
+        // Assert
+        assertThat(result).isEqualTo(updatedTruck);
+        verify(foodTruckRepository, times(1)).findById(truckId);
+        verify(foodTruckRepository, times(1)).save(any(FoodTruck.class));
+    }
+
+    @Test
+    void updateFoodTruck_shouldThrowExceptionWhenTruckNotFound() {
+        // Arrange
+        Long truckId = 1L;
+        FoodTruck updatedTruck = new FoodTruck(truckId, "UpdatedFoodTruck", new User(2L, "newUser", "newPassword", "OWNER", "NewTestCompany"));
+
+        when(foodTruckRepository.findById(truckId)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThatThrownBy(() -> foodTruckService.updateFoodTruck(truckId, updatedTruck))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessageContaining("Food truck with ID " + truckId + " not found");
+
+        verify(foodTruckRepository, times(1)).findById(truckId);
+        verify(foodTruckRepository, never()).save(any(FoodTruck.class));
+    }
+
 
 }
