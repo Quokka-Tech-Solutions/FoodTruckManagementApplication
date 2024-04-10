@@ -17,7 +17,7 @@ public class FoodTruckService {
     private FoodTruckRepository foodTruckRepository;
     private UserRepository userRepository;
 
-    public FoodTruckService(FoodTruckRepository foodTruckRepository, UserRepository userRepository){
+    public FoodTruckService(FoodTruckRepository foodTruckRepository, UserRepository userRepository) {
         this.foodTruckRepository = foodTruckRepository;
         this.userRepository = userRepository;
     }
@@ -26,9 +26,16 @@ public class FoodTruckService {
         return foodTruckRepository.findById(id);
     }
 
-    public Optional<FoodTruck> findByName(String name){return Optional.ofNullable(foodTruckRepository.findByName(name));}
-    public void createFoodTruck(FoodTruck foodTruck){
+    public Optional<FoodTruck> findByName(String name) {
+        return Optional.ofNullable(foodTruckRepository.findByName(name));
+    }
+
+    public void createFoodTruck(FoodTruck foodTruck) {
         foodTruckRepository.save(foodTruck);
+    }
+
+    public void deleteFoodTruck(long id) {
+        foodTruckRepository.deleteById(id);
     }
 
 
@@ -37,5 +44,21 @@ public class FoodTruckService {
         return user.map(foodTruckRepository::findAllByUser).orElse(Collections.emptyList());
     }
 
+    public FoodTruck updateFoodTruck(Long truckId, FoodTruck updatedFoodTruck){
+        Optional<FoodTruck>existingFoodTruck = foodTruckRepository.findById(truckId);
+
+        if (existingFoodTruck.isPresent()){
+            FoodTruck foodTruckToUpdate = existingFoodTruck.get();
+            foodTruckToUpdate.setTruckId(truckId);
+            foodTruckToUpdate.setName(updatedFoodTruck.getName());
+            foodTruckToUpdate.setUser(updatedFoodTruck.getUser());
+
+            FoodTruck updatedTruck = foodTruckRepository.save(foodTruckToUpdate);
+            return updatedTruck;
+        }
+        else {
+            throw new NoSuchElementException("Food truck with ID " + truckId + " not found");
+        }
+    }
 
 }

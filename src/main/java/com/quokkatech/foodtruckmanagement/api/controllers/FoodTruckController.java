@@ -15,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -47,33 +49,94 @@ public class FoodTruckController {
     }
 
     @GetMapping("/{truckId}")
-    public ResponseEntity<FoodTruck> getFoodTruckById(@PathVariable Long truckId){
+    public ResponseEntity<FoodTruckResponse> getFoodTruckById(@PathVariable Long truckId){
         logger.info("FoodTruckController.findById - Finding truck with ID: {}", truckId);
 
-        Optional<FoodTruck> foodTruckOptional = foodTruckService.findById(truckId);
+        try{
+            Optional<FoodTruck> foodTruckOptional = foodTruckService.findById(truckId);
+            if (foodTruckOptional.isPresent()){
+                FoodTruck foodTruck = foodTruckOptional.get();
+                FoodTruckResponse foodTruckResponse = new FoodTruckResponse(foodTruck.getTruckId(),foodTruck.getName(),foodTruck.getUser());
+                return ResponseEntity.ok(foodTruckResponse);
+            }
+            else {
+                return ResponseEntity.notFound().build();
+            }
 
-        return foodTruckOptional
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
     }
     @GetMapping("/truck/{name}")
-    public ResponseEntity<FoodTruck> getFoodTruckByName(@PathVariable String name){
+    public ResponseEntity<FoodTruckResponse> getFoodTruckByName(@PathVariable String name){
         logger.info("FoodTruckController.findByName - Finding truck with name: {}", name);
+        try{
+            Optional<FoodTruck> foodTruckOptional = foodTruckService.findByName(name);
+            if (foodTruckOptional.isPresent()){
+                FoodTruck foodTruck = foodTruckOptional.get();
+                FoodTruckResponse foodTruckResponse = new FoodTruckResponse(foodTruck.getTruckId(),foodTruck.getName(),foodTruck.getUser());
+                return ResponseEntity.ok(foodTruckResponse);
+            }
+            else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
-        Optional<FoodTruck> foodTruckOptional = foodTruckService.findByName(name);
 
-        return foodTruckOptional
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<FoodTruck>> getAllFoodTrucksByUserId(@PathVariable Long userId){
-        logger.info("FoodTruckController.findAllByUser- finding all trucks with user: {}", userId);
+    //can access at endpoint /truckRegistrations?userId=<user_id>
+    @GetMapping()
+    public ResponseEntity<List<FoodTruckResponse>> getAllFoodTrucksByUserId(@RequestParam(required = true) Long userId){
+        logger.info("FoodTruckController.getAllFoodTrucksByUserId- finding all trucks with userId: {}", userId);
+
 
         List<FoodTruck> foodTrucks = foodTruckService.getAllFoodTrucksByUserId(userId);
 
-        return ResponseEntity.ok(List.of(foodTrucks.toArray(new FoodTruck[0])));
+        List<FoodTruckResponse> foodTruckResponses = new ArrayList<>();
+        for (FoodTruck t : foodTrucks){
+            foodTruckResponses.add(new FoodTruckResponse(t.getTruckId(),t.getName(),t.getUser()));
+        }
+        return ResponseEntity.ok(List.of(foodTruckResponses.toArray(new FoodTruckResponse[0])));
+    }
+
+    @PutMapping("/truck/{truckId}")
+    public ResponseEntity<FoodTruckResponse> updateFoodTruck(@PathVariable Long truckId, @RequestBody FoodTruckRequest foodTruckRequest) {
+        try {
+            ModelMapper modelMapper = new ModelMapper();
+            FoodTruck updatedFoodTruck = modelMapper.map(foodTruckRequest, FoodTruck.class);
+            Optional<FoodTruck> existingFoodTruckOptional = foodTruckService.findById(truckId);
+
+            if (existingFoodTruckOptional.isPresent()) {
+                FoodTruck updatedTruck = foodTruckService.updateFoodTruck(truckId, updatedFoodTruck);
+                FoodTruckResponse foodTruckResponse = new FoodTruckResponse(updatedTruck.getTruckId(), updatedTruck.getName(), updatedTruck.getUser());
+                return ResponseEntity.ok(foodTruckResponse);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("/truck/{truckId}")
+    public ResponseEntity<Void> deleteFoodTruck (@PathVariable Long truckId){
+        logger.info("FoodTruckController.deleteFoodTruck - Deleting truck with ID: {}", truckId);
+
+        try{
+            foodTruckService.deleteFoodTruck(truckId);
+            return ResponseEntity.noContent().build();
+        }
+        catch (Exception e){
+            logger.error("Error deleting food truck with ID: {}", truckId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }
