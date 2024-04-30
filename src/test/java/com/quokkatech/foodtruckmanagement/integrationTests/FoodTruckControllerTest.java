@@ -58,7 +58,7 @@ public class FoodTruckControllerTest {
     void registerFoodTruckShouldReturnCreatedStatus(){
         FoodTruckRequest foodTruckRequest = new FoodTruckRequest(1L,"FoodTruck1", new User(1L,"user","password","OWNER", "TestCompany"));
 
-        ResponseEntity<FoodTruckResponse> response = restTemplate.postForEntity("/truckRegistrations", foodTruckRequest, FoodTruckResponse.class);
+        ResponseEntity<FoodTruckResponse> response = restTemplate.postForEntity("/trucks", foodTruckRequest, FoodTruckResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isNotNull();
@@ -70,7 +70,7 @@ public class FoodTruckControllerTest {
         FoodTruck mockTruck = new FoodTruck(1L,"FoodTruck1", new User(1L,"user","password","OWNER", "TestCompany"));
         when(foodTruckService.findById(1L)).thenReturn(Optional.of(mockTruck));
 
-        ResponseEntity<FoodTruck> response = restTemplate.getForEntity("/truckRegistrations/1",FoodTruck.class);
+        ResponseEntity<FoodTruck> response = restTemplate.getForEntity("/trucks/truckId/1",FoodTruck.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getTruckId()).isEqualTo(1L);
@@ -81,7 +81,7 @@ public class FoodTruckControllerTest {
         FoodTruck mockTruck = new FoodTruck(1L,"FoodTruck1", new User(1L,"user","password","OWNER", "TestCompany"));
         when(foodTruckService.findByName("FoodTruck1")).thenReturn(Optional.of(mockTruck));
 
-        ResponseEntity<FoodTruckResponse> response = restTemplate.getForEntity("/truckRegistrations/truck/FoodTruck1",FoodTruckResponse.class);
+        ResponseEntity<FoodTruckResponse> response = restTemplate.getForEntity("/trucks/truckName/FoodTruck1",FoodTruckResponse.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getTruckName()).isEqualTo("FoodTruck1");
@@ -93,7 +93,7 @@ public class FoodTruckControllerTest {
         FoodTruck mockTruck2 = new FoodTruck(2L,"FoodTruck2", new User(1L,"user2","password","OWNER", "TestCompany"));
         when(foodTruckService.getAllFoodTrucksByUserId(1L)).thenReturn(Arrays.asList(mockTruck1, mockTruck2));
 
-        ResponseEntity <FoodTruckResponse[]> response = restTemplate.getForEntity("/truckRegistrations?userId=1",FoodTruckResponse[].class);
+        ResponseEntity <FoodTruckResponse[]> response = restTemplate.getForEntity("/trucks?userId=1",FoodTruckResponse[].class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         FoodTruckResponse[] foodTruckResponses = response.getBody();
@@ -111,7 +111,7 @@ public class FoodTruckControllerTest {
         when(foodTruckService.updateFoodTruck(truckId, updatedTruck)).thenReturn(updatedTruck);
 
         FoodTruckRequest foodTruckRequest = new FoodTruckRequest(updatedTruck.getTruckId(), updatedTruck.getName(), updatedTruck.getUser());
-        ResponseEntity<FoodTruckResponse> response = restTemplate.exchange("/truckRegistrations/truck/" + truckId, HttpMethod.PUT, new HttpEntity<>(foodTruckRequest), FoodTruckResponse.class);
+        ResponseEntity<FoodTruckResponse> response = restTemplate.exchange("/trucks/" + truckId, HttpMethod.PUT, new HttpEntity<>(foodTruckRequest), FoodTruckResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
@@ -127,7 +127,7 @@ public class FoodTruckControllerTest {
         when(foodTruckService.findById(truckId)).thenReturn(Optional.empty());
 
         FoodTruckRequest foodTruckRequest = new FoodTruckRequest(updatedTruck.getTruckId(), updatedTruck.getName(), updatedTruck.getUser());
-        ResponseEntity<FoodTruckResponse> response = restTemplate.exchange("/truckRegistrations/truck/" + truckId, HttpMethod.PUT, new HttpEntity<>(foodTruckRequest), FoodTruckResponse.class);
+        ResponseEntity<FoodTruckResponse> response = restTemplate.exchange("/trucks/" + truckId, HttpMethod.PUT, new HttpEntity<>(foodTruckRequest), FoodTruckResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -136,7 +136,7 @@ public class FoodTruckControllerTest {
     void deleteFoodTruckShouldReturnNoContentWhenTruckIsDeleted() {
         Long truckId = 1L;
 
-        ResponseEntity<Void> response = restTemplate.exchange("/truckRegistrations/truck/" + truckId, HttpMethod.DELETE, null, Void.class);
+        ResponseEntity<Void> response = restTemplate.exchange("/trucks/" + truckId, HttpMethod.DELETE, null, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
