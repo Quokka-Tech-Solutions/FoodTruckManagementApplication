@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/truckRegistrations")
+@RequestMapping("/trucks")
 public class FoodTruckController {
 
     private final FoodTruckService foodTruckService;
@@ -48,7 +48,7 @@ public class FoodTruckController {
 
     }
 
-    @GetMapping("/{truckId}")
+    @GetMapping("/truckId/{truckId}")
     public ResponseEntity<FoodTruckResponse> getFoodTruckById(@PathVariable Long truckId){
         logger.info("FoodTruckController.findById - Finding truck with ID: {}", truckId);
 
@@ -70,7 +70,7 @@ public class FoodTruckController {
         }
 
     }
-    @GetMapping("/truck/{name}")
+    @GetMapping("/truckName/{name}")
     public ResponseEntity<FoodTruckResponse> getFoodTruckByName(@PathVariable String name){
         logger.info("FoodTruckController.findByName - Finding truck with name: {}", name);
         try{
@@ -91,7 +91,7 @@ public class FoodTruckController {
 
     }
 
-    //can access at endpoint /truckRegistrations?userId=<user_id>
+    //can access at endpoint /trucks?userId=<user_id>
     @GetMapping()
     public ResponseEntity<List<FoodTruckResponse>> getAllFoodTrucksByUserId(@RequestParam(required = true) Long userId){
         logger.info("FoodTruckController.getAllFoodTrucksByUserId- finding all trucks with userId: {}", userId);
@@ -106,7 +106,7 @@ public class FoodTruckController {
         return ResponseEntity.ok(List.of(foodTruckResponses.toArray(new FoodTruckResponse[0])));
     }
 
-    @PutMapping("/truck/{truckId}")
+    @PutMapping("/{truckId}")
     public ResponseEntity<FoodTruckResponse> updateFoodTruck(@PathVariable Long truckId, @RequestBody FoodTruckRequest foodTruckRequest) {
         try {
             ModelMapper modelMapper = new ModelMapper();
@@ -125,7 +125,7 @@ public class FoodTruckController {
         }
     }
 
-    @DeleteMapping("/truck/{truckId}")
+    @DeleteMapping("/{truckId}")
     public ResponseEntity<Void> deleteFoodTruck (@PathVariable Long truckId){
         logger.info("FoodTruckController.deleteFoodTruck - Deleting truck with ID: {}", truckId);
 
@@ -135,6 +135,27 @@ public class FoodTruckController {
         }
         catch (Exception e){
             logger.error("Error deleting food truck with ID: {}", truckId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<FoodTruckResponse>> getAllFoodTrucksByUser(@PathVariable Long userId){
+        try{
+
+            List<FoodTruck>foodTrucks = foodTruckService.getAllFoodTrucksByUserId(userId);
+            List<FoodTruckResponse> foodTruckResponses = new ArrayList<>();
+            ModelMapper modelMapper = new ModelMapper();
+            for (FoodTruck t : foodTrucks){
+                foodTruckResponses.add(modelMapper.map(t,FoodTruckResponse.class));
+            }
+            if (!foodTruckResponses.isEmpty()) {
+                return ResponseEntity.ok(foodTruckResponses);
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            }
+        }
+        catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
