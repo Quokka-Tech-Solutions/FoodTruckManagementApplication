@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/trucks")
@@ -93,7 +94,7 @@ public class FoodTruckController {
 
     //can access at endpoint /trucks?userId=<user_id>
     @GetMapping()
-    public ResponseEntity<List<FoodTruckResponse>> getAllFoodTrucksByUserId(@RequestParam(required = true) Long userId){
+    public ResponseEntity<List<FoodTruckResponse>> getAllFoodTrucksByUserId(@RequestParam(required = true) Long userId, @RequestParam(required = false) String name){
         logger.info("FoodTruckController.getAllFoodTrucksByUserId- finding all trucks with userId: {}", userId);
 
 
@@ -103,7 +104,15 @@ public class FoodTruckController {
         for (FoodTruck t : foodTrucks){
             foodTruckResponses.add(new FoodTruckResponse(t.getTruckId(),t.getName(),t.getUser()));
         }
-        return ResponseEntity.ok(List.of(foodTruckResponses.toArray(new FoodTruckResponse[0])));
+        if (name == null){
+            return ResponseEntity.ok(List.of(foodTruckResponses.toArray(new FoodTruckResponse[0])));
+        }
+        else {
+            List<FoodTruckResponse> filteredFoodTruckResponses = foodTruckResponses.stream()
+                    .filter(ftr -> ftr.getTruckName().equalsIgnoreCase(name))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(filteredFoodTruckResponses);
+        }
     }
 
     @PutMapping("/{truckId}")

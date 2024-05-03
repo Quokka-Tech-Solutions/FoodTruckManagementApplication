@@ -102,6 +102,21 @@ public class FoodTruckControllerTest {
     }
 
     @Test
+    void getListOfFoodTrucksShouldReturnListFilteredByName() {
+        FoodTruck mockTruck1 = new FoodTruck(1L, "FoodTruck1", new User(1L, "user", "password", "OWNER", "TestCompany"));
+        FoodTruck mockTruck2 = new FoodTruck(2L, "FoodTruck2", new User(1L, "user2", "password", "OWNER", "TestCompany"));
+        FoodTruck mockTruck3 = new FoodTruck(3L, "MatchingName", new User(1L, "user3", "password", "OWNER", "TestCompany"));
+        when(foodTruckService.getAllFoodTrucksByUserId(1L)).thenReturn(Arrays.asList(mockTruck1, mockTruck2, mockTruck3));
+
+        ResponseEntity<FoodTruckResponse[]> response = restTemplate.getForEntity("/trucks?userId=1&name=MatchingName", FoodTruckResponse[].class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        FoodTruckResponse[] foodTruckResponses = response.getBody();
+        assertThat(foodTruckResponses).isNotNull();
+        assertThat(foodTruckResponses).hasSize(1);
+        assertThat(foodTruckResponses[0].getTruckName()).isEqualTo("MatchingName");
+    }
+    @Test
     void updateFoodTruckShouldReturnUpdatedFoodTruck() {
         Long truckId = 1L;
         FoodTruck existingTruck = new FoodTruck(truckId, "FoodTruck1", new User(1L, "user", "password", "OWNER", "TestCompany"));
