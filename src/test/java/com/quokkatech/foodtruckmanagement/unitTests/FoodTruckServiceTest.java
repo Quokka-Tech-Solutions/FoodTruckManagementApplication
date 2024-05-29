@@ -38,7 +38,7 @@ public class FoodTruckServiceTest {
 
     @Test
     void createFoodTruck(){
-        FoodTruck foodTruck = new FoodTruck(1L,"FoodTruck1", new User(1L,"user","password","OWNER", "TestCompany"));
+        FoodTruck foodTruck = new FoodTruck(1L,"FoodTruck1", new User(1L,"user","password","OWNER", "TestCompany"),null);
 
         foodTruckService.createFoodTruck(foodTruck);
 
@@ -48,8 +48,8 @@ public class FoodTruckServiceTest {
     @Test
     void getAllFoodTrucksByUserId(){
         User mockUser = new User(1L, "user", "password", "OWNER", "TestCompany");
-        FoodTruck mockTruck1 = new FoodTruck(1L, "FoodTruck1", mockUser);
-        FoodTruck mockTruck2 = new FoodTruck(2L, "FoodTruck2", mockUser);
+        FoodTruck mockTruck1 = new FoodTruck(1L, "FoodTruck1", mockUser, null);
+        FoodTruck mockTruck2 = new FoodTruck(2L, "FoodTruck2", mockUser,null);
         List<FoodTruck> expectedFoodTrucks = Arrays.asList(mockTruck1, mockTruck2);
 
         // Mock the repository behavior
@@ -68,8 +68,8 @@ public class FoodTruckServiceTest {
         // Arrange
         Long truckId = 1L;
         User mockUser = new User(1L, "user", "password", "OWNER", "TestCompany");
-        FoodTruck existingTruck = new FoodTruck(truckId, "FoodTruck1", mockUser);
-        FoodTruck updatedTruck = new FoodTruck(truckId, "UpdatedFoodTruck", new User(2L, "newUser", "newPassword", "OWNER", "NewTestCompany"));
+        FoodTruck existingTruck = new FoodTruck(truckId, "FoodTruck1", mockUser,null);
+        FoodTruck updatedTruck = new FoodTruck(truckId, "UpdatedFoodTruck", new User(2L, "newUser", "newPassword", "OWNER", "NewTestCompany"),null);
 
         when(foodTruckRepository.findById(truckId)).thenReturn(Optional.of(existingTruck));
         when(foodTruckRepository.save(any(FoodTruck.class))).thenReturn(updatedTruck);
@@ -87,7 +87,7 @@ public class FoodTruckServiceTest {
     void updateFoodTruck_shouldThrowExceptionWhenTruckNotFound() {
         // Arrange
         Long truckId = 1L;
-        FoodTruck updatedTruck = new FoodTruck(truckId, "UpdatedFoodTruck", new User(2L, "newUser", "newPassword", "OWNER", "NewTestCompany"));
+        FoodTruck updatedTruck = new FoodTruck(truckId, "UpdatedFoodTruck", new User(2L, "newUser", "newPassword", "OWNER", "NewTestCompany"),null);
 
         when(foodTruckRepository.findById(truckId)).thenReturn(Optional.empty());
 
