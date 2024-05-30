@@ -40,11 +40,11 @@ public class FoodTruckController {
             FoodTruck foodTruck = modelMapper.map(foodTruckRequest, FoodTruck.class);
             foodTruckService.createFoodTruck(foodTruck);
 
-            FoodTruckResponse foodTruckResponse = new FoodTruckResponse(foodTruckRequest.getTruckId(), foodTruckRequest.getTruckName(), foodTruckRequest.getUser());
+            FoodTruckResponse foodTruckResponse = new FoodTruckResponse(foodTruckRequest.getTruckId(), foodTruckRequest.getTruckName(), foodTruckRequest.getUser(), foodTruckRequest.getMenu());
 
             return ResponseEntity.status(HttpStatus.CREATED).body(foodTruckResponse);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FoodTruckResponse(foodTruckRequest.getTruckId(), foodTruckRequest.getTruckName(), foodTruckRequest.getUser()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new FoodTruckResponse(foodTruckRequest.getTruckId(), foodTruckRequest.getTruckName(), foodTruckRequest.getUser(),foodTruckRequest.getMenu()));
         }
 
     }
@@ -57,7 +57,7 @@ public class FoodTruckController {
             Optional<FoodTruck> foodTruckOptional = foodTruckService.findById(truckId);
             if (foodTruckOptional.isPresent()){
                 FoodTruck foodTruck = foodTruckOptional.get();
-                FoodTruckResponse foodTruckResponse = new FoodTruckResponse(foodTruck.getTruckId(),foodTruck.getName(),foodTruck.getUser());
+                FoodTruckResponse foodTruckResponse = new FoodTruckResponse(foodTruck.getTruckId(),foodTruck.getName(),foodTruck.getUser(),foodTruck.getMenu());
                 return ResponseEntity.ok(foodTruckResponse);
             }
             else {
@@ -78,7 +78,7 @@ public class FoodTruckController {
             Optional<FoodTruck> foodTruckOptional = foodTruckService.findByName(name);
             if (foodTruckOptional.isPresent()){
                 FoodTruck foodTruck = foodTruckOptional.get();
-                FoodTruckResponse foodTruckResponse = new FoodTruckResponse(foodTruck.getTruckId(),foodTruck.getName(),foodTruck.getUser());
+                FoodTruckResponse foodTruckResponse = new FoodTruckResponse(foodTruck.getTruckId(),foodTruck.getName(),foodTruck.getUser(),foodTruck.getMenu());
                 return ResponseEntity.ok(foodTruckResponse);
             }
             else {
@@ -102,7 +102,7 @@ public class FoodTruckController {
 
         List<FoodTruckResponse> foodTruckResponses = new ArrayList<>();
         for (FoodTruck t : foodTrucks){
-            foodTruckResponses.add(new FoodTruckResponse(t.getTruckId(),t.getName(),t.getUser()));
+            foodTruckResponses.add(new FoodTruckResponse(t.getTruckId(),t.getName(),t.getUser(),t.getMenu()));
         }
         if (name == null){
             return ResponseEntity.ok(List.of(foodTruckResponses.toArray(new FoodTruckResponse[0])));
@@ -124,7 +124,7 @@ public class FoodTruckController {
 
             if (existingFoodTruckOptional.isPresent()) {
                 FoodTruck updatedTruck = foodTruckService.updateFoodTruck(truckId, updatedFoodTruck);
-                FoodTruckResponse foodTruckResponse = new FoodTruckResponse(updatedTruck.getTruckId(), updatedTruck.getName(), updatedTruck.getUser());
+                FoodTruckResponse foodTruckResponse = new FoodTruckResponse(updatedTruck.getTruckId(), updatedTruck.getName(), updatedTruck.getUser(),updatedTruck.getMenu());
                 return ResponseEntity.ok(foodTruckResponse);
             } else {
                 return ResponseEntity.notFound().build();

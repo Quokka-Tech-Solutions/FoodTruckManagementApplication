@@ -1,6 +1,7 @@
 package com.quokkatech.foodtruckmanagement.api.request;
 
 import com.quokkatech.foodtruckmanagement.domain.entities.FoodTruck;
+import com.quokkatech.foodtruckmanagement.domain.entities.Menu;
 import com.quokkatech.foodtruckmanagement.domain.entities.User;
 
 public class FoodTruckRequest {
@@ -8,13 +9,15 @@ public class FoodTruckRequest {
     private String truckName;
 
     private User user;
+    private Menu menu;
 
     public FoodTruckRequest() {}
 
-    public FoodTruckRequest(long truckId, String truckName, User user) {
+    public FoodTruckRequest(long truckId, String truckName, User user, Menu menu) {
         this.truckId = truckId;
         this.truckName = truckName;
         this.user = user;
+        this.menu = menu;
     }
 
     public long getTruckId() {
@@ -41,7 +44,15 @@ public class FoodTruckRequest {
         this.user = user;
     }
 
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
     public FoodTruck toFoodTruck(){
-        return new FoodTruck(truckId,truckName,user);
+        return new FoodTruck(truckId,truckName,user, menu);
     }
 }
